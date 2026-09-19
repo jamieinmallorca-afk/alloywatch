@@ -222,7 +222,7 @@ export default function Home() {
                 ))}
               </ul>
               <Link
-                href={t.name === 'Enterprise' ? 'mailto:hello@alloywatch.io' : '/dashboard'}
+                href={t.name === 'Enterprise' ? 'mailto:info@alloywatch.io' : '/dashboard'}
                 className={`block text-center font-semibold py-3 rounded-xl transition-all ${
                   t.highlight
                     ? 'bg-brand-500 hover:bg-brand-600 text-white'
@@ -238,7 +238,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 text-center text-sm text-white/30 font-mono">
-        <p>© 2026 AlloyWatch · Aerospace Materials Intelligence · hello@alloywatch.io</p>
+        <p>© 2026 AlloyWatch · Aerospace Materials Intelligence · info@alloywatch.io</p>
       </footer>
     </main>
   )

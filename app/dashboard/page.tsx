@@ -124,7 +124,7 @@ export default function DashboardPage() {
 
     if (materialsRes.data) setMaterials(materialsRes.data)
     if (watchlistRes.watchlist) setWatchlist(watchlistRes.watchlist)
-    if (alertsRes.data) setAlerts(alertsRes.data as Alert[])
+    if (alertsRes.data) setAlerts(alertsRes.data as unknown as Alert[])
     if (profileRes.plan) setProfile(profileRes as Profile)
     setLoading(false)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps

@@ -22,9 +22,9 @@ export async function POST(req: NextRequest) {
 
   switch (event.type) {
     case 'checkout.session.completed': {
-      const session = event.data.object as Stripe.CheckoutSession
+      const session = event.data.object as Stripe.Checkout.Session
       const userId = session.metadata?.user_id
-      const plan   = session.metadata?.plan
+      const plan = session.metadata?.plan
       if (userId && plan) {
         await service.from('profiles').upsert({ id: userId, plan, stripe_customer_id: session.customer as string })
       }
@@ -56,4 +56,4 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true })
-      }
+}

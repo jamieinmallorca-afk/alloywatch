@@ -26,14 +26,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
   }
 
-  const session = await stripe.checkout.sessions.create({
-    mode: 'subscription',
-    payment_method_types: ['card'],
-    line_items: [{ price: priceId, quantity: 1 }],
-    metadata: { user_id: user.id, plan },
-    success_url: `${req.nextUrl.origin}/dashboard?upgrade=success`,
-    cancel_url: `${req.nextUrl.origin}/dashboard?upgrade=cancelled`,
-  })
-
-  return NextResponse.json({ url: session.url })
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      line_items: [{ price: priceId, quantity: 1 }],
+      metadata: { user_id: user.id, plan },
+      success_url: `${req.nextUrl.origin}/dashboard?upgrade=success`,
+      cancel_url: `${req.nextUrl.origin}/dashboard?upgrade=cancelled`,
+    })
+    return NextResponse.json({ url: session.url })
+  } catch (err: any) {
+    console.error('Stripe error:', err?.message)
+    return NextResponse.json(
+      { error: err?.message || 'Stripe error' },
+      { status: 500 }
+    )
+  }
 }

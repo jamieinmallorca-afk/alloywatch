@@ -1,12 +1,11 @@
 'use client'
-export const dynamic = 'force-dynamic'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createBrowserClient } from '@supabase/ssr'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const next = searchParams.get('next') || '/dashboard'
@@ -42,22 +41,21 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#080c0a] text-[#d4e0d8] flex flex-col">
       {/* Nav */}
       <nav className="border-b border-[#1a2e22] px-6 py-4">
-        <Link href="/" className="text-lg font-bold text-[#30d98a]">
+        <Link href="/" className="text-lg font-bold text-[#30d08a]">
           AlloyWatch
         </Link>
       </nav>
 
+      {/* Form */}
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-sm">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-[#e8f0eb] mb-1">Sign in</h1>
-            <p className="text-sm text-[#6b8f7d]">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="text-[#30d98a] hover:underline">
-                Sign up free
-              </Link>
-            </p>
-          </div>
+          <h1 className="text-2xl font-bold mb-2">Sign in</h1>
+          <p className="text-sm text-[#3a5a45] mb-8">
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className="text-[#30d08a] hover:text-[#25c477] transition-colors">
+              Sign up free
+            </Link>
+          </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
@@ -70,7 +68,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@company.com"
-                className="w-full px-3 py-2.5 rounded-lg bg-[#0d1a12] border border-[#1a2e22] text-[#d4e0d8] placeholder-[#3a5a45] text-sm focus:outline-none focus:border-[#30d98a] transition-colors"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#0d1a12] border border-[#1a2e22] text-[#d4e0d8] placeholder-[#3a5a45] focus:outline-none focus:border-[#30d08a] transition-colors"
               />
             </div>
 
@@ -84,7 +82,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-3 py-2.5 rounded-lg bg-[#0d1a12] border border-[#1a2e22] text-[#d4e0d8] placeholder-[#3a5a45] text-sm focus:outline-none focus:border-[#30d98a] transition-colors"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#0d1a12] border border-[#1a2e22] text-[#d4e0d8] placeholder-[#3a5a45] focus:outline-none focus:border-[#30d08a] transition-colors"
               />
             </div>
 
@@ -97,7 +95,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-[#30d98a] text-[#080c0a] text-sm font-bold hover:bg-[#25c477] transition-colors disabled:opacity-60"
+              className="w-full py-2.5 rounded-lg bg-[#30d98a] text-[#080c0a] text-sm font-bold hover:bg-[#25c477] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
@@ -111,5 +109,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#080c0a]" />}>
+      <LoginForm />
+    </Suspense>
   )
 }

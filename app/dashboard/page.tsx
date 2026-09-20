@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
-import { Bell, BellOff, Pin, PinOff, AlertTriangle, ChevronDown, LogOut, Zap } from 'lucide-react'
+import { Bell, BellOff, Pin, PinOff, AlertTriangle, ChevronDown, LogOut, Zap, Send } from 'lucide-react'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -84,12 +84,29 @@ export default function DashboardPage() {
   const [watchlist, setWatchlist]   = useState<WatchlistEntry[]>([])
   const [alerts, setAlerts]         = useState<Alert[]>([])
   const [profile, setProfile]       = useState<Profile | null>(null)
-  const [tab, setTab]               = useState<'watchlist' | 'all' | 'alerts'>('watchlist')
+  const [tab, setTab]               = useState<'watchlist' | 'all' | 'alerts' | 'submit' | 'intel'>('watchlist')
   const [severityFilter, setSeverityFilter] = useState<'all' | 'critical' | 'high'>('all')
   const [loading, setLoading]       = useState(true)
   const [pinLoading, setPinLoading] = useState<string | null>(null)
   const [upgradeMsg, setUpgradeMsg] = useState<string | null>(null)
   const [userEmail, setUserEmail]   = useState<string | null>(null)
+
+  // ── Supplier intel ───────────────────────────────────────────────────────────
+  const [intelData, setIntelData] = useState<{
+    geo_summaries: Array<{ category: string; headline: string; detail: string; severity: string }>
+    supplier_signals: Array<{ supplier: string; signal: string; type: string; detail: string; timestamp: string }>
+    updated_at: string
+  } | null>(null)
+  const [intelLoading, setIntelLoading] = useState(false)
+
+  // ── Lead time submission form ─────────────────────────────────────────────────
+  const [submitMaterialId, setSubmitMaterialId] = useState('')
+  const [submitMin, setSubmitMin]   = useState('')
+  const [submitMax, setSubmitMax]   = useState('')
+  const [submitSupplier, setSubmitSupplier] = useState('')
+  const [submitForm, setSubmitForm] = useState('')
+  const [submitNotes, setSubmitNotes] = useState('')
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
 
   // ── Auth ─────────────────────────────────────────────────────────────────────
 
@@ -204,6 +221,47 @@ export default function DashboardPage() {
     router.replace('/')
   }
 
+  async function loadIntel() {
+    if (intelData || intelLoading) return
+    setIntelLoading(true)
+    try {
+      const res = await fetch('/api/intel')
+      if (res.ok) setIntelData(await res.json())
+    } finally {
+      setIntelLoading(false)
+    }
+  }
+
+  async function handleSubmitLeadTime(e: React.FormEvent) {
+    e.preventDefault()
+    setSubmitStatus('sending')
+    try {
+      const res = await fetch('/api/submit-lead-time', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          material_id: submitMaterialId,
+          weeks_min: Number(submitMin),
+          weeks_max: Number(submitMax),
+          supplier_name: submitSupplier,
+          form: submitForm,
+          notes: submitNotes,
+          confidence: 'medium',
+        }),
+      })
+      if (res.ok) {
+        setSubmitStatus('ok')
+        setSubmitMaterialId(''); setSubmitMin(''); setSubmitMax('')
+        setSubmitSupplier(''); setSubmitForm(''); setSubmitNotes('')
+        setTimeout(() => setSubmitStatus('idle'), 4000)
+      } else {
+        setSubmitStatus('err')
+      }
+    } catch {
+      setSubmitStatus('err')
+    }
+  }
+
   // ── Render helpers ────────────────────────────────────────────────────────────
 
   const isFree = !profile || profile.plan === 'free'
@@ -290,7 +348,7 @@ export default function DashboardPage() {
               className="flex items-center gap-1.5 text-xs bg-[#30d98a] text-[#080c0a] font-semibold px-3 py-1.5 rounded-lg hover:bg-[#25c477] transition-colors"
             >
               <Zap size={12} />
-              Upgrade to Pro — $299/mo
+              Upgrade to Pro — $799/mo
             </button>
             <button
               onClick={() => startUpgrade('enterprise')}
@@ -304,17 +362,17 @@ export default function DashboardPage() {
 
       {/* ── Tabs ── */}
       <div className="px-6 pt-6 pb-0 flex gap-1 border-b border-[#1e2e28]">
-        {(['watchlist', 'all', 'alerts'] as const).map(t => (
+        {(['watchlist', 'all', 'alerts', 'intel', 'submit'] as const).map(t => (
           <button
             key={t}
-            onClick={() => setTab(t)}
+            onClick={() => { setTab(t); if (t === 'intel') loadIntel() }}
             className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors capitalize ${
               tab === t
                 ? 'bg-[#1e2e28] text-[#30d98a] border border-b-0 border-[#2a3e34]'
                 : 'text-[#6b8f7d] hover:text-[#a3b3a8]'
             }`}
           >
-            {t}
+            {t === 'submit' ? '+ Submit Intel' : t === 'intel' ? 'Market Intel' : t}
             {t === 'watchlist' && watchedIds.size > 0 && (
               <span className="ml-1.5 text-xs text-[#6b8f7d]">({watchedIds.size})</span>
             )}
@@ -450,6 +508,18 @@ export default function DashboardPage() {
                         </span>
                       </div>
 
+                      {/* Sparkline trend */}
+                      <div className="flex items-center justify-between">
+                        <img
+                          src={`/api/sparkline/${material.id}`}
+                          alt="lead time trend"
+                          width={80}
+                          height={24}
+                          className="opacity-90"
+                        />
+                        <span className="text-[10px] text-[#4a6e58]">12-wk trend</span>
+                      </div>
+
                       {/* Alert count */}
                       {alertCount > 0 && (
                         <div
@@ -466,6 +536,190 @@ export default function DashboardPage() {
               </div>
             )}
           </>
+        )}
+
+        {/* ── Market Intel tab ── */}
+        {tab === 'intel' && (
+          <div className="space-y-8">
+            {intelLoading && (
+              <div className="text-center py-16 text-[#6b8f7d] text-sm">Loading intel…</div>
+            )}
+            {intelData && (
+              <>
+                {/* Geopolitical risk summaries */}
+                <section>
+                  <h2 className="text-sm font-semibold text-[#9ab8a6] uppercase tracking-wider mb-4">Geopolitical risk</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {intelData.geo_summaries.map(g => (
+                      <div key={g.category} className="bg-[#0d1a14] border border-[#1a2620] rounded-xl p-4">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <p className="text-sm font-semibold text-[#d4e0d8] leading-snug">{g.headline}</p>
+                          <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${
+                            g.severity === 'critical' ? 'bg-red-900 text-red-300' :
+                            g.severity === 'high'     ? 'bg-orange-900 text-orange-300' :
+                            g.severity === 'medium'   ? 'bg-yellow-900 text-yellow-300' :
+                                                        'bg-green-900 text-green-300'
+                          }`}>{g.severity}</span>
+                        </div>
+                        <p className="text-xs text-[#6b8f7d] leading-relaxed">{g.detail}</p>
+                        <p className="text-xs text-[#4a6e58] mt-2 capitalize">{g.category.replace('-', ' ')}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Supplier health signals */}
+                <section>
+                  <h2 className="text-sm font-semibold text-[#9ab8a6] uppercase tracking-wider mb-4">Supplier health signals</h2>
+                  <div className="space-y-3">
+                    {intelData.supplier_signals.map((s, i) => (
+                      <div key={i} className="bg-[#0d1a14] border border-[#1a2620] rounded-xl p-4 flex gap-4">
+                        <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
+                          s.type === 'positive' ? 'bg-[#30d98a]' :
+                          s.type === 'negative' ? 'bg-red-400' :
+                                                  'bg-yellow-400'
+                        }`} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <p className="text-sm font-semibold text-[#d4e0d8]">{s.supplier}</p>
+                            <span className={`text-xs font-medium ${
+                              s.type === 'positive' ? 'text-[#30d98a]' :
+                              s.type === 'negative' ? 'text-red-400' :
+                                                      'text-yellow-400'
+                            }`}>{s.signal}</span>
+                          </div>
+                          <p className="text-xs text-[#6b8f7d] leading-relaxed">{s.detail}</p>
+                          <p className="text-xs text-[#4a6e58] mt-1.5">
+                            {new Date(s.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <p className="text-xs text-[#4a6e58]">
+                  Last updated {new Date(intelData.updated_at).toLocaleString()}. Intel is curated from public sources and community submissions.
+                </p>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* ── Submit Intel tab ── */}
+        {tab === 'submit' && (
+          <div className="max-w-lg mx-auto py-4">
+            <div className="mb-6">
+              <h2 className="text-base font-semibold text-[#e8f0eb] mb-1">Submit lead time intel</h2>
+              <p className="text-sm text-[#6b8f7d]">
+                Share what you&apos;re seeing from your suppliers. Data is reviewed before being added to the platform.
+              </p>
+            </div>
+
+            {submitStatus === 'ok' && (
+              <div className="mb-4 flex items-center gap-2 text-sm text-[#30d98a] bg-[#0d2418] border border-[#1e4030] rounded-lg px-4 py-3">
+                <Send size={14} />
+                Thanks — your submission is under review.
+              </div>
+            )}
+            {submitStatus === 'err' && (
+              <div className="mb-4 text-sm text-[#f87171] bg-[#2a0a0a] border border-[#4a1a1a] rounded-lg px-4 py-3">
+                Something went wrong. Please try again.
+              </div>
+            )}
+
+            <form onSubmit={handleSubmitLeadTime} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-[#9ab8a6] mb-1.5">Material *</label>
+                <select
+                  value={submitMaterialId}
+                  onChange={e => setSubmitMaterialId(e.target.value)}
+                  required
+                  className="w-full bg-[#0d1a14] border border-[#2a3e34] rounded-lg px-3 py-2 text-sm text-[#d4e0d8] focus:outline-none focus:border-[#30d98a]"
+                >
+                  <option value="">Select a material…</option>
+                  {materials.map(m => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-[#9ab8a6] mb-1.5">Min weeks *</label>
+                  <input
+                    type="number" min="1" max="104"
+                    value={submitMin}
+                    onChange={e => setSubmitMin(e.target.value)}
+                    required
+                    placeholder="e.g. 12"
+                    className="w-full bg-[#0d1a14] border border-[#2a3e34] rounded-lg px-3 py-2 text-sm text-[#d4e0d8] placeholder:text-[#4a6e58] focus:outline-none focus:border-[#30d98a]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#9ab8a6] mb-1.5">Max weeks *</label>
+                  <input
+                    type="number" min="1" max="104"
+                    value={submitMax}
+                    onChange={e => setSubmitMax(e.target.value)}
+                    required
+                    placeholder="e.g. 20"
+                    className="w-full bg-[#0d1a14] border border-[#2a3e34] rounded-lg px-3 py-2 text-sm text-[#d4e0d8] placeholder:text-[#4a6e58] focus:outline-none focus:border-[#30d98a]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-[#9ab8a6] mb-1.5">Supplier name <span className="text-[#4a6e58]">(optional)</span></label>
+                <input
+                  type="text"
+                  value={submitSupplier}
+                  onChange={e => setSubmitSupplier(e.target.value)}
+                  placeholder="e.g. Carpenter Technology"
+                  className="w-full bg-[#0d1a14] border border-[#2a3e34] rounded-lg px-3 py-2 text-sm text-[#d4e0d8] placeholder:text-[#4a6e58] focus:outline-none focus:border-[#30d98a]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-[#9ab8a6] mb-1.5">Material form <span className="text-[#4a6e58]">(optional)</span></label>
+                <select
+                  value={submitForm}
+                  onChange={e => setSubmitForm(e.target.value)}
+                  className="w-full bg-[#0d1a14] border border-[#2a3e34] rounded-lg px-3 py-2 text-sm text-[#d4e0d8] focus:outline-none focus:border-[#30d98a]"
+                >
+                  <option value="">Any form</option>
+                  <option value="billet">Billet</option>
+                  <option value="bar">Bar / Rod</option>
+                  <option value="sheet">Sheet / Plate</option>
+                  <option value="tube">Tube / Pipe</option>
+                  <option value="wire">Wire</option>
+                  <option value="powder">Powder</option>
+                  <option value="forging">Forging</option>
+                  <option value="casting">Casting</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-[#9ab8a6] mb-1.5">Notes <span className="text-[#4a6e58]">(optional)</span></label>
+                <textarea
+                  value={submitNotes}
+                  onChange={e => setSubmitNotes(e.target.value)}
+                  rows={3}
+                  placeholder="Any context about this quote — region, volume, alloy grade, etc."
+                  className="w-full bg-[#0d1a14] border border-[#2a3e34] rounded-lg px-3 py-2 text-sm text-[#d4e0d8] placeholder:text-[#4a6e58] focus:outline-none focus:border-[#30d98a] resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitStatus === 'sending'}
+                className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#30d98a] text-[#080c0a] text-sm font-bold rounded-lg hover:bg-[#25c477] transition-colors disabled:opacity-60"
+              >
+                <Send size={14} />
+                {submitStatus === 'sending' ? 'Submitting…' : 'Submit lead time'}
+              </button>
+            </form>
+          </div>
         )}
       </main>
     </div>

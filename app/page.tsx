@@ -115,7 +115,7 @@ const faqs = [
     items: [
       {
         q: "My critical material isn't listed — can you add it?",
-        a: 'Yes. Use the request form on the dashboard or email us at info@alloywatch.io. We prioritise additions based on demand — if multiple users request the same material it moves to the top of the queue. We're adding new materials regularly.",
+        a: "Yes. Use the request form on the dashboard or email us at info@alloywatch.io. We prioritise additions based on demand — if multiple users request the same material it moves to the top of the queue. We're adding new materials regularly.",
       },
       {
         q: 'Do you track form-specific lead times (bar vs. sheet vs. billet)?',
@@ -136,7 +136,7 @@ const faqs = [
       },
       {
         q: 'Can I export the data?',
-        a: 'CSV export for your watchlist materials is available on Pro. API access for ERP integration is on the roadmap — contact info@alloywatch.io if that's a priority for your team.",
+        a: "CSV export for your watchlist materials is available on Pro. API access for ERP integration is on the roadmap — contact info@alloywatch.io if that's a priority for your team.",
       },
       {
         q: 'Do you offer team or enterprise accounts?',
@@ -153,10 +153,10 @@ const faqs = [
     items: [
       {
         q: 'If I submit lead time data, does my company name get shared?',
-        a: 'No. Submissions are anonymised before they're published. We show the source type (crowdsourced vs. manual vs. scraped) and a confidence score, but never the submitting company or individual. Your competitive intelligence stays yours.",
+        a: "No. Submissions are anonymised before they're published. We show the source type (crowdsourced vs. manual vs. scraped) and a confidence score, but never the submitting company or individual. Your competitive intelligence stays yours.",
       },
       {
-        q: 'Can my competitors see what materials I'm tracking on my watchlist?",
+        q: "Can my competitors see what materials I'm tracking on my watchlist?",
         a: "No. Your watchlist is private. We use aggregated, anonymised watchlist data internally to understand which materials matter most to our users — that's it. No individual watchlist is visible to anyone other than you.",
       },
     ],

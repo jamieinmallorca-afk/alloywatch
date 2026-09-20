@@ -18,7 +18,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">1. Who we are</h2>
-            <p>AlloyWatch Ltd operates alloywatch.io. This policy explains how we collect, use, and protect your personal data. Our contact email is <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a>.</p>
+            <p>AlloyWatch Ltd operates alloywatch.io. This policy explains how we collect, use, and protect your personal data. Our contact email is <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a>.</p>
           </section>
 
           <section>
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
               <li>Data portability — receive a copy of your data in a machine-readable format</li>
               <li>Withdraw consent at any time where processing is based on consent</li>
             </ul>
-            <p className="mt-3">To exercise any of these rights, email <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a>. We will respond within 30 days.</p>
+            <p className="mt-3">To exercise any of these rights, email <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a>. We will respond within 30 days.</p>
           </section>
 
           <section>
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">10. Contact</h2>
-            <p>For privacy-related questions or requests, contact <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a>.</p>
+            <p>For privacy-related questions or requests, contact <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a>.</p>
           </section>
 
         </div>
@@ -102,7 +102,7 @@ export default function PrivacyPage() {
           <Link href="/terms" className="hover:text-[#6b8f7d] transition-colors">Terms</Link>
           <Link href="/privacy" className="hover:text-[#6b8f7d] transition-colors">Privacy</Link>
           <Link href="/refund" className="hover:text-[#6b8f7d] transition-colors">Refund Policy</Link>
-          <Link href="mailto:hello@alloywatch.io" className="hover:text-[#6b8f7d] transition-colors">hello@alloywatch.io</Link>
+          <Link href="mailto:info@alloywatch.io" className="hover:text-[#6b8f7d] transition-colors">info@alloywatch.io</Link>
         </div>
       </footer>
     </div>

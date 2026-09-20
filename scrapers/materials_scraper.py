@@ -71,16 +71,16 @@ async def get_materials(client: httpx.AsyncClient) -> list[dict]:
     r = await client.get(
         f"{SUPABASE_URL}/rest/v1/materials",
         headers=HEADERS,
-        params={"is_tracked": "eq.true", "select": "id,slug,name,category"},
+        params={"is_active": "eq.true", "select": "id,slug,name,category"},
     )
     r.raise_for_status()
     return r.json()
 
 
-async def insert_geo_alert(client: httpx.AsyncClient, alert: dict) -> None:
-    """Insert a geopolitical/disruption alert into Supabase."""
+async def insert_alert(client: httpx.AsyncClient, alert: dict) -> None:
+    """Insert a supply disruption alert into Supabase."""
     r = await client.post(
-        f"{SUPABASE_URL}/rest/v1/geo_alerts",
+        f"{SUPABASE_URL}/rest/v1/alerts",
         headers=HEADERS,
         json=alert,
     )
@@ -106,16 +106,15 @@ async def run_scraper():
                     continue
 
                 alert = {
+                    "material_id": material["id"],
+                    "alert_type": "news",
                     "title": article["title"][:255],
                     "summary": (article.get("description") or "")[:500],
-                    "full_text": article.get("content"),
-                    "affected_materials": [material["id"]],
                     "severity": "medium",  # default; manual review can upgrade
                     "source_url": article.get("url"),
-                    "source_name": article.get("source", {}).get("name"),
-                    "published_at": article.get("publishedAt") or datetime.now(timezone.utc).isoformat(),
+                    "is_active": True,
                 }
-                await insert_geo_alert(client, alert)
+                await insert_alert(client, alert)
                 print(f"  [✓] Alert inserted: {alert['title'][:60]}...")
 
     print(f"\n[AlloyWatch Scraper] Done at {datetime.now(timezone.utc).isoformat()}")

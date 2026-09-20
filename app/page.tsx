@@ -119,7 +119,7 @@ const faqs = [
       },
       {
         q: 'Do you track form-specific lead times (bar vs. sheet vs. billet)?',
-        a: 'Yes. Where we have sufficient data, lead times are broken out by form — bar, sheet, plate, billet, tube, powder, and prepreg are the most common. The form is shown on each individual data point so you can filter to what's relevant to your program.",
+        a: "Yes. Where we have sufficient data, lead times are broken out by form — bar, sheet, plate, billet, tube, powder, and prepreg are the most common. The form is shown on each individual data point so you can filter to what's relevant to your program.",
       },
       {
         q: 'Do you track aerospace-certified grade specifically?',

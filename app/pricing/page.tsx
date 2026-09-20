@@ -188,6 +188,11 @@ export default function PricingPage() {
               hello@alloywatch.io
             </a>
           </p>
+          <div className="flex items-center justify-center gap-6 mt-6 text-xs text-[#4a6e58]">
+            <Link href="/terms" className="hover:text-[#6b8f7d] transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-[#6b8f7d] transition-colors">Privacy Policy</Link>
+            <Link href="/refund" className="hover:text-[#6b8f7d] transition-colors">Refund Policy</Link>
+          </div>
         </div>
       </div>
     </div>

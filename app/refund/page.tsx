@@ -18,7 +18,7 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">Subscriptions</h2>
-            <p>AlloyWatch Pro and Enterprise plans are billed monthly. You may cancel your subscription at any time from your account settings or by emailing <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a>.</p>
+            <p>AlloyWatch Pro and Enterprise plans are billed monthly. You may cancel your subscription at any time from your account settings or by emailing <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a>.</p>
             <p className="mt-3">Cancellation takes effect at the end of your current billing period. You will retain full access until that date. <strong className="text-[#d4e0d8]">We do not issue pro-rated refunds</strong> for unused days within a billing period.</p>
           </section>
 
@@ -29,7 +29,7 @@ export default function RefundPage() {
               <li>You were charged in error (e.g. duplicate charge)</li>
               <li>A technical issue on our side prevented you from accessing the Service during a significant portion of your billing period and we were unable to resolve it</li>
             </ul>
-            <p className="mt-3">To request an exception refund, email <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a> with your account email and a brief description of the issue. We will respond within 3 business days.</p>
+            <p className="mt-3">To request an exception refund, email <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a> with your account email and a brief description of the issue. We will respond within 3 business days.</p>
           </section>
 
           <section>
@@ -44,7 +44,7 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">Contact</h2>
-            <p>Questions about billing or refunds? Email <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a> and we&apos;ll get back to you within one business day.</p>
+            <p>Questions about billing or refunds? Email <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a> and we&apos;ll get back to you within one business day.</p>
           </section>
 
         </div>
@@ -55,7 +55,7 @@ export default function RefundPage() {
           <Link href="/terms" className="hover:text-[#6b8f7d] transition-colors">Terms</Link>
           <Link href="/privacy" className="hover:text-[#6b8f7d] transition-colors">Privacy</Link>
           <Link href="/refund" className="hover:text-[#6b8f7d] transition-colors">Refund Policy</Link>
-          <Link href="mailto:hello@alloywatch.io" className="hover:text-[#6b8f7d] transition-colors">hello@alloywatch.io</Link>
+          <Link href="mailto:info@alloywatch.io" className="hover:text-[#6b8f7d] transition-colors">info@alloywatch.io</Link>
         </div>
       </footer>
     </div>

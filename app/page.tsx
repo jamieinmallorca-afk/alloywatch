@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const materials = [
   { name: 'Inconel 718', category: 'Superalloy', leadTime: '28–32 wks', trend: '↑', risk: 'HIGH', price: '$42.80/kg' },
-  { name: 'Ti-6Al-4V', category: 'Titanium', leadTime: '16–20 wks', trend: '↑', risk: 'MED', price: '$38.20/kg' },
+  { name: 'Ti-6Al-4V', category: 'Titaium', leadTime: '16–20 wks', trend: '↑', risk: 'MED', price: '$38.20/kg' },
   { name: 'Toray T700 CF', category: 'Carbon Fibre', leadTime: '12–18 wks', trend: '→', risk: 'MED', price: '$28.50/kg' },
   { name: 'Inconel 625', category: 'Superalloy', leadTime: '22–26 wks', trend: '↑', risk: 'HIGH', price: '$39.60/kg' },
   { name: 'Maraging 300', category: 'Steel', leadTime: '10–14 wks', trend: '→', risk: 'LOW', price: '$18.40/kg' },
@@ -115,11 +115,11 @@ const faqs = [
     items: [
       {
         q: "My critical material isn't listed — can you add it?",
-        a: 'Yes. Use the request form on the dashboard or email us at info@alloywatch.io. We prioritise additions based on demand — if multiple users request the same material it moves to the top of the queue. We're adding new materials regularly.',
+        a: 'Yes. Use the request form on the dashboard or email us at info@alloywatch.io. We prioritise additions based on demand — if multiple users request the same material it moves to the top of the queue. We're adding new materials regularly.",
       },
       {
         q: 'Do you track form-specific lead times (bar vs. sheet vs. billet)?',
-        a: 'Yes. Where we have sufficient data, lead times are broken out by form — bar, sheet, plate, billet, tube, powder, and prepreg are the most common. The form is shown on each individual data point so you can filter to what's relevant to your program.',
+        a: 'Yes. Where we have sufficient data, lead times are broken out by form — bar, sheet, plate, billet, tube, powder, and prepreg are the most common. The form is shown on each individual data point so you can filter to what's relevant to your program.",
       },
       {
         q: 'Do you track aerospace-certified grade specifically?',
@@ -136,7 +136,7 @@ const faqs = [
       },
       {
         q: 'Can I export the data?',
-        a: 'CSV export for your watchlist materials is available on Pro. API access for ERP integration is on the roadmap — contact info@alloywatch.io if that's a priority for your team.',
+        a: 'CSV export for your watchlist materials is available on Pro. API access for ERP integration is on the roadmap — contact info@alloywatch.io if that's a priority for your team.",
       },
       {
         q: 'Do you offer team or enterprise accounts?',
@@ -153,10 +153,10 @@ const faqs = [
     items: [
       {
         q: 'If I submit lead time data, does my company name get shared?',
-        a: 'No. Submissions are anonymised before they're published. We show the source type (crowdsourced vs. manual vs. scraped) and a confidence score, but never the submitting company or individual. Your competitive intelligence stays yours.',
+        a: 'No. Submissions are anonymised before they're published. We show the source type (crowdsourced vs. manual vs. scraped) and a confidence score, but never the submitting company or individual. Your competitive intelligence stays yours.",
       },
       {
-        q: 'Can my competitors see what materials I'm tracking on my watchlist?',
+        q: 'Can my competitors see what materials I'm tracking on my watchlist?",
         a: "No. Your watchlist is private. We use aggregated, anonymised watchlist data internally to understand which materials matter most to our users — that's it. No individual watchlist is visible to anyone other than you.",
       },
     ],

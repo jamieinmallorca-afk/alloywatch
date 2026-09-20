@@ -112,7 +112,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) { router.replace('/'); return }
+      if (!user) { router.replace('/login'); return }
       setUserEmail(user.email ?? null)
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -218,7 +218,7 @@ export default function DashboardPage() {
 
   async function signOut() {
     await supabase.auth.signOut()
-    router.replace('/')
+    router.replace('/login')
   }
 
   async function loadIntel() {

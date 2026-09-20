@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const session = await (stripe.checkout.sessions.create as any)({
       mode: 'subscription',
       managed_payments: { enabled: false },
       line_items: [{ price: priceId, quantity: 1 }],

@@ -71,6 +71,98 @@ const tiers = [
   },
 ]
 
+const faqs = [
+  {
+    section: 'Data & Accuracy',
+    items: [
+      {
+        q: 'Where does the data come from?',
+        a: "AlloyWatch aggregates lead time data from three sources: manual research and direct supplier enquiries, crowdsourced submissions from procurement professionals in the field, and scraping of trade press and supplier bulletins. Every data point shows its source type and confidence rating so you know exactly what you're looking at.",
+      },
+      {
+        q: 'How often is it updated?',
+        a: 'Lead time data is reviewed and refreshed on a rolling basis as new submissions come in and market conditions change. Each data point carries a "valid as of" date. Major disruption events — like a new allocation announcement from a primary mill — trigger a manual review within 24–48 hours.',
+      },
+      {
+        q: 'How do you define "lead time"?',
+        a: 'Lead time on AlloyWatch means order placement to material ready-to-ship from the supplier — not delivery to your door. Transit time varies too much by destination to be meaningful at this level. All lead times assume standard aerospace-certified grade with full CMTRs unless noted otherwise.',
+      },
+      {
+        q: "What's the geographic scope?",
+        a: 'We track suppliers globally — US, EU, UK, Japan, and key emerging sources. Where lead times differ significantly by region, we break them out by supplier so you can compare directly. Russian-origin material (e.g. VSMPO-AVISMA titanium) is flagged separately given the post-2022 compliance landscape.',
+      },
+    ],
+  },
+  {
+    section: 'Credibility',
+    items: [
+      {
+        q: "Who's behind AlloyWatch?",
+        a: "AlloyWatch was built by James Barnard, who got burned by opaque supply chains firsthand. The platform exists because real lead time intelligence was locked inside distributor relationships and expensive analyst subscriptions — and the rest of the market was flying blind. We're not a market research firm producing quarterly PDFs. This is a live tool built for people who need to make procurement decisions today.",
+      },
+      {
+        q: 'How is this different from calling my distributor?',
+        a: "Your distributor gives you their lead time, for their stock, on that day. AlloyWatch shows you lead times across multiple suppliers simultaneously, with historical trend data so you can see whether things are getting better or worse — and geopolitical flags so you understand why. It doesn't replace your distributor relationship; it means you go into that call knowing what a fair lead time looks like.",
+      },
+      {
+        q: "Is this the same data that's in the trade press?",
+        a: "Trade press reports on supply chain disruptions weeks or months after they happen. AlloyWatch tracks lead times as they move, with crowdsourced data from people placing actual orders. When Inconel 718 billet started hitting 52-week quotes in late 2024, that didn't make the trade press until Q1 2025. Our users knew in real time.",
+      },
+    ],
+  },
+  {
+    section: 'Coverage',
+    items: [
+      {
+        q: "My critical material isn't listed — can you add it?",
+        a: 'Yes. Use the request form on the dashboard or email us at info@alloywatch.io. We prioritise additions based on demand — if multiple users request the same material it moves to the top of the queue. We're adding new materials regularly.',
+      },
+      {
+        q: 'Do you track form-specific lead times (bar vs. sheet vs. billet)?',
+        a: 'Yes. Where we have sufficient data, lead times are broken out by form — bar, sheet, plate, billet, tube, powder, and prepreg are the most common. The form is shown on each individual data point so you can filter to what's relevant to your program.',
+      },
+      {
+        q: 'Do you track aerospace-certified grade specifically?',
+        a: 'Yes. Where data is available, we distinguish between aerospace-certified material (with full CMTRs, AS9100 supplier qualification, and traceability) and commercial-grade. Most of our core dataset is aerospace-certified. Commercial-grade data is labelled as such.',
+      },
+    ],
+  },
+  {
+    section: 'Commercial',
+    items: [
+      {
+        q: "What does Pro give me that Free doesn't?",
+        a: 'The free tier shows 5 materials with basic lead time ranges. Pro unlocks the full material library (30+ materials), real-time lead times, historical trend charts, geopolitical risk intelligence, supplier health scores, and email alerts when lead times move on your watchlist.',
+      },
+      {
+        q: 'Can I export the data?',
+        a: 'CSV export for your watchlist materials is available on Pro. API access for ERP integration is on the roadmap — contact info@alloywatch.io if that's a priority for your team.',
+      },
+      {
+        q: 'Do you offer team or enterprise accounts?',
+        a: 'Yes. Enterprise accounts include team watchlists, custom material coverage, dedicated data refresh on your key materials, and API access. Email info@alloywatch.io to discuss pricing.',
+      },
+      {
+        q: 'Is there an API?',
+        a: "In development and on our roadmap. If you have a specific integration use case — ERP, internal dashboard, procurement system — email info@alloywatch.io and we'll scope it with you. Enterprise customers get early access.",
+      },
+    ],
+  },
+  {
+    section: 'Trust & Privacy',
+    items: [
+      {
+        q: 'If I submit lead time data, does my company name get shared?',
+        a: 'No. Submissions are anonymised before they're published. We show the source type (crowdsourced vs. manual vs. scraped) and a confidence score, but never the submitting company or individual. Your competitive intelligence stays yours.',
+      },
+      {
+        q: 'Can my competitors see what materials I'm tracking on my watchlist?',
+        a: "No. Your watchlist is private. We use aggregated, anonymised watchlist data internally to understand which materials matter most to our users — that's it. No individual watchlist is visible to anyone other than you.",
+      },
+    ],
+  },
+]
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#080c0a] text-white">
@@ -83,6 +175,7 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-4">
           <Link href="#pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
+          <Link href="#faq" className="text-sm text-white/60 hover:text-white transition-colors">FAQ</Link>
           <Link href="/login" className="text-sm text-white/60 hover:text-white transition-colors">Sign in</Link>
           <Link href="/signup" className="btn-primary text-sm px-4 py-2">
             Get started free
@@ -238,6 +331,43 @@ export default function Home() {
               >
                 {t.cta}
               </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="max-w-3xl mx-auto px-6 pb-24">
+        <h2 className="text-3xl font-bold text-center mb-4">Frequently asked questions</h2>
+        <p className="text-white/50 text-center mb-16">
+          Can&apos;t find the answer you need?{' '}
+          <a href="mailto:info@alloywatch.io" className="text-brand-500 hover:underline">
+            Email us directly.
+          </a>
+        </p>
+
+        <div className="space-y-8">
+          {faqs.map((group) => (
+            <div key={group.section}>
+              <h3 className="text-xs font-semibold text-brand-500 uppercase tracking-widest mb-4 font-mono">
+                {group.section}
+              </h3>
+              <div className="space-y-1">
+                {group.items.map((item) => (
+                  <details
+                    key={item.q}
+                    className="group border border-white/10 rounded-xl overflow-hidden bg-white/5 hover:border-white/20 transition-colors"
+                  >
+                    <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none text-sm font-medium text-white/90 hover:text-white transition-colors select-none">
+                      {item.q}
+                      <span className="shrink-0 text-white/40 text-lg leading-none transition-transform group-open:rotate-45">+</span>
+                    </summary>
+                    <div className="px-5 pb-5 text-sm text-white/60 leading-relaxed border-t border-white/10 pt-4">
+                      {item.a}
+                    </div>
+                  </details>
+                ))}
+              </div>
             </div>
           ))}
         </div>

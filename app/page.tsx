@@ -245,7 +245,12 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 text-center text-sm text-white/30 font-mono">
-        <p>© 2026 AlloyWatch · Aerospace Materials Intelligence · info@alloywatch.io</p>
+        <p className="mb-3">© 2026 AlloyWatch · Aerospace Materials Intelligence · info@alloywatch.io</p>
+        <div className="flex items-center justify-center gap-6 text-xs text-white/20">
+          <Link href="/terms" className="hover:text-white/50 transition-colors">Terms</Link>
+          <Link href="/privacy" className="hover:text-white/50 transition-colors">Privacy</Link>
+          <Link href="/refund" className="hover:text-white/50 transition-colors">Refund Policy</Link>
+        </div>
       </footer>
     </main>
   )

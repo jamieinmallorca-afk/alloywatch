@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      managed_payments: { enabled: false },
       line_items: [{ price: priceId, quantity: 1 }],
       metadata: { user_id: user.id, plan },
       success_url: `${req.nextUrl.origin}/dashboard?upgrade=success`,

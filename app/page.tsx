@@ -83,8 +83,9 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-4">
           <Link href="#pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
-          <Link href="/dashboard" className="btn-primary text-sm px-4 py-2">
-            View dashboard
+          <Link href="/login" className="text-sm text-white/60 hover:text-white transition-colors">Sign in</Link>
+          <Link href="/signup" className="btn-primary text-sm px-4 py-2">
+            Get started free
           </Link>
         </div>
       </nav>

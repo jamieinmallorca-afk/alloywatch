@@ -28,7 +28,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">3. Accounts</h2>
-            <p>You must provide accurate information when creating an account. You are responsible for maintaining the confidentiality of your login credentials. You may not share your account with others or use another person&apos;s account. Notify us immediately at <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a> if you suspect unauthorised access.</p>
+            <p>You must provide accurate information when creating an account. You are responsible for maintaining the confidentiality of your login credentials. You may not share your account with others or use another person&apos;s account. Notify us immediately at <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a> if you suspect unauthorised access.</p>
           </section>
 
           <section>
@@ -65,7 +65,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">9. Termination</h2>
-            <p>We may suspend or terminate your account if you violate these Terms or for any other reason with reasonable notice. You may close your account at any time by emailing <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a>.</p>
+            <p>We may suspend or terminate your account if you violate these Terms or for any other reason with reasonable notice. You may close your account at any time by emailing <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a>.</p>
           </section>
 
           <section>
@@ -80,7 +80,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-base font-semibold text-[#d4e0d8] mb-3">12. Contact</h2>
-            <p>For any questions about these Terms, contact us at <a href="mailto:hello@alloywatch.io" className="text-[#30d98a] hover:underline">hello@alloywatch.io</a>.</p>
+            <p>For any questions about these Terms, contact us at <a href="mailto:info@alloywatch.io" className="text-[#30d98a] hover:underline">info@alloywatch.io</a>.</p>
           </section>
 
         </div>
@@ -91,7 +91,7 @@ export default function TermsPage() {
           <Link href="/terms" className="hover:text-[#6b8f7d] transition-colors">Terms</Link>
           <Link href="/privacy" className="hover:text-[#6b8f7d] transition-colors">Privacy</Link>
           <Link href="/refund" className="hover:text-[#6b8f7d] transition-colors">Refund Policy</Link>
-          <Link href="mailto:hello@alloywatch.io" className="hover:text-[#6b8f7d] transition-colors">hello@alloywatch.io</Link>
+          <Link href="mailto:info@alloywatch.io" className="hover:text-[#6b8f7d] transition-colors">info@alloywatch.io</Link>
         </div>
       </footer>
     </div>

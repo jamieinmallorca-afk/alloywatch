@@ -53,7 +53,7 @@ const tiers = [
   },
   {
     name: 'Pro',
-    price: '$299',
+    price: '$799',
     period: '/month',
     desc: 'Full intelligence for procurement teams.',
     features: ['All 30 materials', 'Real-time lead times', 'Supplier health scores', 'Geopolitical alerts', 'Crowdsource network access', 'Monthly PDF reports'],
@@ -223,7 +223,13 @@ export default function Home() {
                 ))}
               </ul>
               <Link
-                href={t.name === 'Enterprise' ? 'mailto:info@alloywatch.io' : '/dashboard'}
+                href={
+                  t.name === 'Enterprise'
+                    ? 'mailto:info@alloywatch.io'
+                    : t.name === 'Pro'
+                    ? '/pricing'
+                    : '/signup'
+                }
                 className={`block text-center font-semibold py-3 rounded-xl transition-all ${
                   t.highlight
                     ? 'bg-brand-500 hover:bg-brand-600 text-white'

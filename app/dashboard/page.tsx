@@ -506,7 +506,12 @@ export default function DashboardPage() {
                       {/* Material header */}
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-[#d4e0d8] truncate">{material.name}</p>
+                          <button
+                            onClick={() => router.push(`/dashboard/${material.slug}`)}
+                            className="text-sm font-semibold text-[#d4e0d8] truncate hover:text-[#30d98a] transition-colors text-left w-full"
+                          >
+                            {material.name}
+                          </button>
                           <p className="text-xs text-[#6b8f7d] capitalize mt-0.5">{material.category}</p>
                         </div>
                         <button

@@ -171,13 +171,13 @@ export default function Home() {
         <div className="flex items-center gap-2">
           <span className="text-xl font-bold text-brand-500">◈</span>
           <span className="font-bold text-lg tracking-tight">AlloyWatch</span>
-          <span className="text-xs text-white/30 font-mono ml-1">MATERIALS INTELLIGENCE</span>
+          <span className="text-xs text-white/30 font-mono ml-1 hidden sm:inline">MATERIALS INTELLIGENCE</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="#pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
-          <Link href="#faq" className="text-sm text-white/60 hover:text-white transition-colors">FAQ</Link>
+          <Link href="#pricing" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">Pricing</Link>
+          <Link href="#faq" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">FAQ</Link>
           <Link href="/login" className="text-sm text-white/60 hover:text-white transition-colors">Sign in</Link>
-          <Link href="/signup" className="btn-primary text-sm px-4 py-2">
+          <Link href="/signup" className="btn-primary text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2">
             Get started free
           </Link>
         </div>

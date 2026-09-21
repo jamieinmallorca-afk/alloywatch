@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const materials = [
   { name: 'Inconel 718', category: 'Superalloy', leadTime: '28–32 wks', trend: '↑', risk: 'HIGH', price: '$42.80/kg' },
-  { name: 'Ti-6Al-4V', category: 'Titaium', leadTime: '16–20 wks', trend: '↑', risk: 'MED', price: '$38.20/kg' },
+  { name: 'Ti-6Al-4V', category: 'Titanium', leadTime: '16–20 wks', trend: '↑', risk: 'MED', price: '$38.20/kg' },
   { name: 'Toray T700 CF', category: 'Carbon Fibre', leadTime: '12–18 wks', trend: '→', risk: 'MED', price: '$28.50/kg' },
   { name: 'Inconel 625', category: 'Superalloy', leadTime: '22–26 wks', trend: '↑', risk: 'HIGH', price: '$39.60/kg' },
   { name: 'Maraging 300', category: 'Steel', leadTime: '10–14 wks', trend: '→', risk: 'LOW', price: '$18.40/kg' },
@@ -199,7 +199,7 @@ export default function Home() {
         </div>
         <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 tracking-tight">
           Inconel 718 is at<br />
-          <span className="text-danger-500 font-mono">32-week lead times.</span><br />
+          <span className="text-danger-500 font-mono">28–32 wks lead times.</span><br />
           <span className="text-white/80">Do you know what&apos;s next?</span>
         </h1>
         <p className="text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">

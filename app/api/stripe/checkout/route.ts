@@ -5,8 +5,9 @@ import { createSupabaseServerClient } from '@/lib/supabase-server'
 export const runtime = 'nodejs'
 
 const PRICE_IDS: Record<string, string> = {
-  pro: process.env.STRIPE_PRO_PRICE_ID!,
-  enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID!,
+  individual: process.env.STRIPE_PRICE_INDIVIDUAL!,
+  teams: process.env.STRIPE_PRICE_TEAMS!,
+  pro: process.env.STRIPE_PRICE_PRO!,
 }
 
 export async function POST(req: NextRequest) {

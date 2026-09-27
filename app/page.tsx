@@ -50,24 +50,37 @@ const tiers = [
     features: ['5 materials', '30-day lagged lead times', 'Commodity price charts', 'Weekly digest email'],
     cta: 'Start free',
     highlight: false,
+    href: '/signup',
+  },
+  {
+    name: 'Individual',
+    price: '$49',
+    period: '/month',
+    desc: 'For procurement managers and consultants working solo.',
+    features: ['All 30 materials', 'Real-time lead times', 'Geopolitical disruption alerts', 'Crowdsource network access', 'Monthly PDF reports', '1 seat'],
+    cta: 'Start free trial',
+    highlight: false,
+    href: '/signup',
+  },
+  {
+    name: 'Teams',
+    price: '$149',
+    period: '/month',
+    desc: 'For procurement and supply chain teams.',
+    features: ['Everything in Individual', 'Up to 5 seats', 'Shared material watchlists', 'Team alert notifications', 'Supplier health scores', 'Priority support'],
+    cta: 'Start team trial',
+    highlight: true,
+    href: '/signup',
   },
   {
     name: 'Pro',
-    price: '$799',
+    price: '$299',
     period: '/month',
-    desc: 'Full intelligence for procurement teams.',
-    features: ['All 30 materials', 'Real-time lead times', 'Supplier health scores', 'Geopolitical alerts', 'Crowdsource network access', 'Monthly PDF reports'],
+    desc: 'Full platform access for larger teams with API needs.',
+    features: ['Everything in Teams', 'Up to 20 seats', 'API access', 'Custom supplier tracking', 'Custom alert thresholds', 'Quarterly analyst briefing'],
     cta: 'Start Pro trial',
-    highlight: true,
-  },
-  {
-    name: 'Enterprise',
-    price: '$2,500',
-    period: '/month',
-    desc: 'For teams, APIs, and custom tracking.',
-    features: ['Everything in Pro', 'API access', 'Custom supplier tracking', '20 team seats', 'Quarterly analyst briefing', 'Custom alert thresholds'],
-    cta: 'Contact us',
     highlight: false,
+    href: '/signup',
   },
 ]
 
@@ -131,20 +144,20 @@ const faqs = [
     section: 'Commercial',
     items: [
       {
-        q: "What does Pro give me that Free doesn't?",
-        a: 'The free tier shows 5 materials with basic lead time ranges. Pro unlocks the full material library (30+ materials), real-time lead times, historical trend charts, geopolitical risk intelligence, supplier health scores, and email alerts when lead times move on your watchlist.',
+        q: "What does Individual give me that Free doesn't?",
+        a: 'The free tier shows 5 materials with basic lead time ranges. Individual unlocks the full material library (30+ materials), real-time lead times, historical trend charts, geopolitical risk intelligence, and email alerts when lead times move on your watchlist.',
+      },
+      {
+        q: "What does Teams add over Individual?",
+        a: 'Teams adds up to 5 seats, shared watchlists so your whole team sees the same view, supplier health scores, and team-wide alert notifications. Everyone on the team gets the same real-time picture.',
       },
       {
         q: 'Can I export the data?',
-        a: "CSV export for your watchlist materials is available on Pro. API access for ERP integration is on the roadmap — contact info@alloywatch.io if that's a priority for your team.",
-      },
-      {
-        q: 'Do you offer team or enterprise accounts?',
-        a: 'Yes. Enterprise accounts include team watchlists, custom material coverage, dedicated data refresh on your key materials, and API access. Email info@alloywatch.io to discuss pricing.',
+        a: "CSV export for your watchlist materials is available on Individual and above. API access for ERP integration is available on the Pro plan — email info@alloywatch.io if you need a custom integration.",
       },
       {
         q: 'Is there an API?',
-        a: "In development and on our roadmap. If you have a specific integration use case — ERP, internal dashboard, procurement system — email info@alloywatch.io and we'll scope it with you. Enterprise customers get early access.",
+        a: "Yes — API access is included on the Pro plan. If you have a specific integration use case — ERP, internal dashboard, procurement system — email info@alloywatch.io and we'll scope it with you.",
       },
     ],
   },
@@ -270,7 +283,7 @@ export default function Home() {
       <section id="features" className="max-w-6xl mx-auto px-6 pb-24">
         <h2 className="text-3xl font-bold text-center mb-4">What AlloyWatch tracks</h2>
         <p className="text-white/50 text-center mb-16 max-w-xl mx-auto">
-          Built for procurement managers, supply chain directors, and materials engineers at aerospace and space companies.
+          Built for procurement managers, supply chain consultants, and materials engineers at aerospace, space, and defence companies.
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           {features.map((f) => (
@@ -284,14 +297,14 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="max-w-5xl mx-auto px-6 pb-24">
+      <section id="pricing" className="max-w-6xl mx-auto px-6 pb-24">
         <h2 className="text-3xl font-bold text-center mb-4">Intelligence that pays for itself</h2>
-        <p className="text-white/50 text-center mb-16">One avoided stockout covers a year of Pro.</p>
-        <div className="grid md:grid-cols-3 gap-6">
+        <p className="text-white/50 text-center mb-16">One avoided stockout covers a year of subscription.</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {tiers.map((t) => (
             <div
               key={t.name}
-              className={`rounded-2xl p-6 border ${
+              className={`rounded-2xl p-6 border flex flex-col ${
                 t.highlight
                   ? 'border-brand-500 bg-brand-500/10'
                   : 'border-white/10 bg-white/5'
@@ -302,12 +315,13 @@ export default function Home() {
                   Most popular
                 </div>
               )}
+              <div className="text-sm font-semibold text-white/50 mb-1">{t.name}</div>
               <div className="mb-2">
                 <span className="text-3xl font-bold font-mono">{t.price}</span>
                 <span className="text-white/50 text-sm">{t.period}</span>
               </div>
               <p className="text-white/60 text-sm mb-6">{t.desc}</p>
-              <ul className="space-y-2 mb-8">
+              <ul className="space-y-2 mb-8 flex-1">
                 {t.features.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-sm">
                     <span className="text-brand-500 mt-0.5">✓</span>
@@ -316,13 +330,7 @@ export default function Home() {
                 ))}
               </ul>
               <Link
-                href={
-                  t.name === 'Enterprise'
-                    ? 'mailto:info@alloywatch.io'
-                    : t.name === 'Pro'
-                    ? '/pricing'
-                    : '/signup'
-                }
+                href={t.href}
                 className={`block text-center font-semibold py-3 rounded-xl transition-all ${
                   t.highlight
                     ? 'bg-brand-500 hover:bg-brand-600 text-white'

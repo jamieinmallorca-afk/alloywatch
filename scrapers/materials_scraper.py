@@ -34,12 +34,11 @@ RSS_FEEDS = [
     ("Defense News",        "https://www.defensenews.com/arc/outboundfeeds/rss/"),
     ("FlightGlobal",        "https://www.flightglobal.com/rss/"),
     ("SpaceNews",           "https://spacenews.com/feed/"),
-    ("Aerospace Technology","https://www.aerospace-technology.com/feeds/news/"),
-    ("Aero-Mag",            "https://www.aero-mag.com/feed/"),
-    ("The Manufacturer",    "https://www.themanufacturer.com/feed/"),
-    ("American Machinist",  "https://www.americanmachinist.com/rss"),
-    ("Fastmarkets",         "https://www.fastmarkets.com/rss/latest-news"),
-    ("Reuters Business",    "https://feeds.reuters.com/reuters/businessNews"),
+    ("MetalMiner",          "https://agmetalminer.com/feed/"),
+    ("CompositesWorld",     "https://www.compositesworld.com/rss/news"),
+    ("Mining.com",          "https://www.mining.com/feed/"),
+    ("GNews Titanium",      "https://news.google.com/rss/search?q=titanium+OR+superalloy+shortage+aerospace&hl=en-US&gl=US&ceid=US:en"),
+    ("GNews Nickel/Cobalt", "https://news.google.com/rss/search?q=nickel+OR+cobalt+OR+tungsten+supply+shortage&hl=en-US&gl=US&ceid=US:en"),
 ]
 
 # ── Keywords per material slug ────────────────────────────────────────────────

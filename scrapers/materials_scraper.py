@@ -1,7 +1,12 @@
 """
-AlloyWatch Materials Scraper v2
+AlloyWatch Materials Scraper v2.1
 Runs nightly on Railway. Fetches disruption signals from trade press RSS feeds
 (primary) and NewsAPI (fallback). Both write to the alerts table.
+
+Relevance rule (applies to RSS and NewsAPI):
+  an article counts for a material if it contains one of the material's exact
+  keywords, OR it contains a core term for the material AND a severity term
+  (shortage, delay, lead time, etc.).
 
 Environment variables required:
   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
@@ -36,12 +41,11 @@ RSS_FEEDS = [
     ("SpaceNews",           "https://spacenews.com/feed/"),
     ("MetalMiner",          "https://agmetalminer.com/feed/"),
     ("CompositesWorld",     "https://www.compositesworld.com/rss/news"),
-    ("Mining.com",          "https://www.mining.com/feed/"),
     ("GNews Titanium",      "https://news.google.com/rss/search?q=titanium+OR+superalloy+shortage+aerospace&hl=en-US&gl=US&ceid=US:en"),
     ("GNews Nickel/Cobalt", "https://news.google.com/rss/search?q=nickel+OR+cobalt+OR+tungsten+supply+shortage&hl=en-US&gl=US&ceid=US:en"),
 ]
 
-# ── Keywords per material slug ────────────────────────────────────────────────
+# ── Exact keywords per material slug (strong match on their own) ─────────────
 MATERIAL_KEYWORDS: dict[str, list[str]] = {
     "inconel-718": [
         "inconel 718", "inconel718", "superalloy shortage", "superalloy lead time",
@@ -78,6 +82,20 @@ MATERIAL_KEYWORDS: dict[str, list[str]] = {
     ],
 }
 
+# ── Core terms per material slug (count only together with a severity term) ──
+MATERIAL_CORE_TERMS: dict[str, list[str]] = {
+    "inconel-718": ["inconel", "superalloy"],
+    "ti-6al-4v":   ["titanium"],
+    "toray-t700":  ["toray", "carbon fiber", "carbon fibre"],
+    "inconel-625": ["inconel", "nickel alloy"],
+    "maraging-300": ["maraging"],
+    "rhenium":     ["rhenium"],
+    "beryllium":   ["beryllium"],
+    "hafnium":     ["hafnium"],
+    "tungsten":    ["tungsten"],
+    "cobalt":      ["cobalt"],
+}
+
 HIGH_SEVERITY_TERMS = [
     "shortage", "allocation", "force majeure", "critical supply", "supply crisis",
     "export ban", "sanctions", "trade restriction", "mill closure", "plant closure",
@@ -86,6 +104,7 @@ MEDIUM_SEVERITY_TERMS = [
     "lead time", "delay", "disruption", "supply chain", "constraint",
     "limited availability", "extended lead", "backlog",
 ]
+ALL_SEVERITY_TERMS = HIGH_SEVERITY_TERMS + MEDIUM_SEVERITY_TERMS
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -111,9 +130,17 @@ def parse_published_at(entry) -> str:
 
 
 def article_matches(material_slug: str, title: str, summary: str) -> bool:
-    keywords = MATERIAL_KEYWORDS.get(material_slug, [])
+    """True if the article has an exact keyword, or a core term plus a severity term."""
     haystack = (title + " " + summary).lower()
-    return any(kw.lower() in haystack for kw in keywords)
+
+    keywords = MATERIAL_KEYWORDS.get(material_slug, [])
+    if any(kw.lower() in haystack for kw in keywords):
+        return True
+
+    core_terms = MATERIAL_CORE_TERMS.get(material_slug, [])
+    has_core = any(term.lower() in haystack for term in core_terms)
+    has_severity = any(term in haystack for term in ALL_SEVERITY_TERMS)
+    return has_core and has_severity
 
 
 # ── Supabase ──────────────────────────────────────────────────────────────────
@@ -150,7 +177,7 @@ async def fetch_rss_feed(client: httpx.AsyncClient, name: str, url: str) -> list
     try:
         r = await client.get(
             url, timeout=15, follow_redirects=True,
-            headers={"User-Agent": "AlloyWatch/2.0 (materials intelligence)"},
+            headers={"User-Agent": "AlloyWatch/2.1 (materials intelligence)"},
         )
         if r.status_code != 200:
             print(f"  [rss] {name}: HTTP {r.status_code}")
@@ -246,12 +273,19 @@ async def run_newsapi_pass(client: httpx.AsyncClient, materials: list[dict]) -> 
 
     for material in materials:
         articles = await fetch_newsapi(client, material["slug"])
-        for article in articles[:2]:
+        saved = 0
+        for article in articles:
             title = article.get("title", "")
             if not title:
                 continue
 
             summary = article.get("description") or ""
+
+            # Relevance filter: skip articles that only matched loosely
+            if not article_matches(material["slug"], title, summary):
+                print(f"    [skip] Not relevant: {title[:60]}...")
+                continue
+
             alert = {
                 "material_id": material["id"],
                 "alert_type": "news",
@@ -264,7 +298,11 @@ async def run_newsapi_pass(client: httpx.AsyncClient, materials: list[dict]) -> 
             ok = await insert_alert(client, alert)
             if ok:
                 inserted += 1
+                saved += 1
                 print(f"    [✓] {material['name']}: {title[:70]}...")
+
+            if saved >= 2:
+                break
 
     return inserted
 
@@ -272,18 +310,18 @@ async def run_newsapi_pass(client: httpx.AsyncClient, materials: list[dict]) -> 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 async def run_scraper():
-    print(f"[AlloyWatch Scraper v2] Starting at {datetime.now(timezone.utc).isoformat()}")
+    print(f"[AlloyWatch Scraper v2.1] Starting at {datetime.now(timezone.utc).isoformat()}")
 
     async with httpx.AsyncClient() as client:
         materials = await get_materials(client)
-        print(f"[AlloyWatch Scraper v2] {len(materials)} tracked materials")
+        print(f"[AlloyWatch Scraper v2.1] {len(materials)} tracked materials")
 
         rss_count = await run_rss_pass(client, materials)
         news_count = await run_newsapi_pass(client, materials)
 
         total = rss_count + news_count
-        print(f"\n[AlloyWatch Scraper v2] Done — {rss_count} from RSS · {news_count} from NewsAPI · {total} total new alerts")
-        print(f"[AlloyWatch Scraper v2] Finished at {datetime.now(timezone.utc).isoformat()}")
+        print(f"\n[AlloyWatch Scraper v2.1] Done — {rss_count} from RSS · {news_count} from NewsAPI · {total} total new alerts")
+        print(f"[AlloyWatch Scraper v2.1] Finished at {datetime.now(timezone.utc).isoformat()}")
 
 
 if __name__ == "__main__":
